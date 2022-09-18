@@ -1,16 +1,15 @@
-const axios = require("axios");
+function distance(lat1, lon1, lat2, lon2) {
+    var R = 6371; // km (change this constant to get miles)
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    if (d > 1) return Math.round(d) + "km";
+    else if (d <= 1) return Math.round(d * 1000) + "m";
+    return d;
+}
 
-function getHotel() {
-
-    const optionsHotels = {
-    const options = {
-
-        method: 'GET',
-        url: 'https://hotels4.p.rapidapi.com/locations/v2/search',
-        params: { query: 'new york', locale: 'en_US', currency: 'USD' },
-        headers: {
-            'X-RapidAPI-Key': '213bf8eeb6mshabac5e8f6740a32p17141djsnbf46e85640b0',
-            'X-RapidAPI-Host': 'hotels4.p.rapidapi.com'
-        }
-    };
-
+// console.log(distance(47.44534, -122.29181, 47.61016, -122.34651))
