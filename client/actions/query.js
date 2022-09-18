@@ -77,7 +77,7 @@ const getHotelList = (destinationID) => {
     axios.request(optionsProperties)
         .then((response) => {
             console.log(response.data.data.body.searchResults.results, 'response data')
-            return (response.data.data.body.searchResults.results)
+            return response.data.data.body.searchResults.results
         })
         .catch((e) => {
             console.error(e, 'e')

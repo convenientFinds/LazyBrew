@@ -29,9 +29,14 @@ const MainContainer = () =>{
   // })
 
   const getHotelData = (destination) => {
-    let response = getHotelList(destination)
-    setHotelList(response)
-    setDone(true)
+    getHotelList(destination)
+    .then((resp) => {
+      setHotelList(resp)
+      setDone(true)
+    })
+    .catch((e) => {
+      console.log(e, 'e')
+    })
     console.log(hotelList, 'hotelList')
   }
 
@@ -61,7 +66,7 @@ const MainContainer = () =>{
         </button> */} 
       </div>
       <div id="hotel_brewery_wrapper">
-        <Hotel props = {hotelList}/>
+        <Hotel props = {hotelList} done = {done}/>
         {/* <div id="hotelcontaine">
           <h3>List of Hotels</h3>
           {done &&

@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Hotel = ({props}) => {
+const Hotel = ({props, done}) => {
   return (
       <div className='hotelContainer'>Hotel Placeholder
         <div> <span>Name: </span> </div>
-    {props.length != 0 && props.map((ele) => {
+    {done && props.map((ele) => {
       <div>
       {ele.name}
       </div>
