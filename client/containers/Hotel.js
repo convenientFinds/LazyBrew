@@ -1,17 +1,5 @@
 import React from 'react';
 
-<<<<<<< HEAD
-const Hotel = ({props, done}) => {
-  return (
-      <div className='hotelContainer'>Hotel Placeholder
-        <div> <span>Name: </span> </div>
-    {done && props.map((ele) => {
-      <div>
-      {ele.name}
-      </div>
-    })}
-      </div>
-=======
 const Hotel = ({ hotelList, hotelDone, brewDone, setBrewDone }) => {
   // 1) onClick to invoke a function(with lat/long as arguments) 
   //2) that said function will use the api, given the coordinates (input from function) 
@@ -22,7 +10,7 @@ const Hotel = ({ hotelList, hotelDone, brewDone, setBrewDone }) => {
     <div className='hotelContainer'>Hotel Placeholder
       <div> <span>Query Results: </span> </div>
       {hotelDone && hotelList.map((ele, i) => {
-        console.log('this is props', hotelList)
+        //console.log('this is props', hotelList)
         return (
           <div key={i}>
             i: {i}
@@ -52,7 +40,6 @@ const Hotel = ({ hotelList, hotelDone, brewDone, setBrewDone }) => {
         )
       })}
     </div>
->>>>>>> origin/radizorit
   )
 };
 

@@ -21,19 +21,19 @@ const MainContainer = () => {
     let checkIn = '2022-09-19'
     let checkOut = '2022-09-22'
 
-    function distance(lat1, lon1, lat2, lon2) {
-      var R = 6371; // km (change this constant to get miles)
-      var dLat = (lat2 - lat1) * Math.PI / 180;
-      var dLon = (lon2 - lon1) * Math.PI / 180;
-      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      var d = R * c;
-      if (d > 1) return Math.round(d) + "km";
-      else if (d <= 1) return Math.round(d * 1000) + "m";
-      return d;
-    }
+    // function distance(lat1, lon1, lat2, lon2) {
+    //   var R = 6371; // km (change this constant to get miles)
+    //   var dLat = (lat2 - lat1) * Math.PI / 180;
+    //   var dLon = (lon2 - lon1) * Math.PI / 180;
+    //   var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    //     Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    //     Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    //   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    //   var d = R * c;
+    //   if (d > 1) return Math.round(d) + "km";
+    //   else if (d <= 1) return Math.round(d * 1000) + "m";
+    //   return d;
+    // }
 
     const optionsProperties = {
       method: 'GET',
@@ -50,30 +50,18 @@ const MainContainer = () => {
         currency: 'USD'
       },
       headers: {
-        'X-RapidAPI-Key': '213bf8eeb6mshabac5e8f6740a32p17141djsnbf46e85640b0',
+        'X-RapidAPI-Key': '1c0468dc69mshb2bfaf661934cf1p125acdjsnbe73e4a4cb45',
         'X-RapidAPI-Host': 'hotels4.p.rapidapi.com'
       }
     };
 
-<<<<<<< HEAD
-  const getHotelData = (destination) => {
-    getHotelList(destination)
-    .then((resp) => {
-      setHotelList(resp)
-      setDone(true)
-    })
-    .catch((e) => {
-      console.log(e, 'e')
-    })
-    console.log(hotelList, 'hotelList')
-=======
     axios.request(optionsProperties)
       .then((response) => {
         let propertiesResult = response.data.data.body.searchResults.results
         let finalHotelData = []
         // for (let i = 0; i < propertiesResult.length; i += 1) {
-        for (let i = 0; i < 2; i += 1) {
-          console.log(propertiesResult[i].name, 'propertiesResult[i].name')
+        for (let i = 0; i < 5; i += 1) {
+          //console.log(propertiesResult[i].name, 'propertiesResult[i].name')
           const optionsBreweries = {
             method: 'GET',
             // url: `https://api.openbrewerydb.org/breweries?by_dist=33.945757,-118.358262&per_page=20`,
@@ -85,44 +73,55 @@ const MainContainer = () => {
             .then((beerResponse) => {
               // console.log(beerResponse.data)
               // console.log(oneProperty.coordinates.lat, oneProperty.coordinates.long)
+              //console.log('hotel:', oneProperty);     
+              //console.log(`breweries associated with ${oneProperty.name}`, beerResponse)         
               const breweryArray = []
               for (let i = 0; i < beerResponse.data.length; i++) {
                 let distanceFromHotel = geodist({ lat: oneProperty.coordinate.lat, lon: oneProperty.coordinate.lon }, { lat: beerResponse.data[i].latitude, lon: beerResponse.data[i].longitude })
-                if (distanceFromHotel > 1) {
+                if (distanceFromHotel > 2) {
                   break
                 }
                 breweryArray.push(beerResponse.data[i])
-                console.log(beerResponse.data[i], 'beerResponse.data[i]', distanceFromHotel, 'distanceFromHotel', breweryArray, 'breweryArray')
+                //console.log(beerResponse.data[i], 'beerResponse.data[i]', distanceFromHotel, 'distanceFromHotel', breweryArray, 'breweryArray')
               }
+              oneProperty.breweryListLength = breweryArray.length
               oneProperty.breweryList = breweryArray
-              // oneProperty.breweryListLength = breweryArray.length
+              //console.log(`trimmed brewery array associated with ${oneProperty.name}`, oneProperty.breweryList)
+              //console.log(`${oneProperty.name} has ${oneProperty.breweryList.length} breweries within 2 miles`)
               // console.log(oneProperty.coordinate.lat, oneProperty.coordinate.lon, 'oneProperty')
               // setHotelList([...hotelList, oneProperty])
               finalHotelData.push(oneProperty) //instead of pushing to finalHotelData, we can just change state like setHotelList([...hotelList, oneProperty]) hopefully this is a valid way?
               //maybe a console.log to say that this call is over  
-              return finalHotelData
+              //return finalHotelData
             })
-            .then((finalData) => {
-              // props.sort((a,b) => {a.brewerlyList.length - b.breweryListLength > 0 ? 1 : -1})
-              setHotelList(finalData)
-              // console.log(hotelList, 'hotelList')
-              setHotelDone(true)
-            })
+            // .then((unsortedData) => {
+            //   console.log('unsorted hotel list', unsortedData)
+            //   console.log(`brewery array length of hotel 0 (${unsortedData[0].name})`, unsortedData[0].breweryList.length)
+            //   // props.sort((a,b) => {a.brewerlyList.length - b.breweryListLength > 0 ? 1 : -1})
+            //   //setHotelList(finalData)
+            //   // console.log(hotelList, 'hotelList')
+            //   //setHotelDone(true)
+            // })
             .catch((e) => {
               console.error(e, 'e')
             })
         }
+        return finalHotelData
       })
-      // .then((resDone) => {
-      //   //console.log both apis officially called :)
-      //   // console.log(finalHotelData, 'finalHotelData')
-      //   setHotelList(finalHotelData)
-      //   setHotelDone(true)
-      // })
+      .then((unsortedHotelList) => {
+        console.log('unsorted hotel list', unsortedHotelList)
+        //console.log both apis officially called :)
+        // console.log(finalHotelData, 'finalHotelData')
+        const sortedHotelList = unsortedHotelList.sort((a,b)=>{
+          return b.breweryListLength - a.breweryListLength
+        })
+        console.log('sorted hotel list', sortedHotelList)
+        // setHotelList(unsortedHotelList)
+        // setHotelDone(true)
+      })
       .catch((e) => {
         console.error(e, 'e')
       })
->>>>>>> origin/radizorit
   }
 
 
@@ -152,13 +151,9 @@ const MainContainer = () => {
         </button> */}
       </div>
       <div id="hotel_brewery_wrapper">
-<<<<<<< HEAD
-        <Hotel props = {hotelList} done = {done}/>
-=======
         {/* <Hotel hotelList={hotelList} brewList={brewList} hotelDone={hotelDone} brewDone={brewDone} setBrewDone={setBrewDone} /> */}
         <Hotel hotelList={hotelList} hotelDone={hotelDone} brewDone= {brewDone} setBrewDone= {setBrewDone} />
         {/* <Breweries/> */}
->>>>>>> origin/radizorit
         {/* <div id="hotelcontaine">
           <h3>List of Hotels</h3>
           {done &&
