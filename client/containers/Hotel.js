@@ -20,40 +20,30 @@ const Hotel = ({ hotelList, hotelDone, brewDone, setBrewDone, setHotelDone, setH
     // }))
   }
   return (
-    <div className='hotelContainer'>Hotel Placeholder
-      <div> <span>Query Results: </span> </div>
+    <div>
       <button onClick={(e) => setHotelDone(true)}>See hotels</button>
       {hotelDone && hotelList.sort((a, b) => {
         return (a.breweryListLength > b.breweryListLength ? -1 : 1)
       }).map((ele, i) => {
         if (ele.showHotel) {
           return (
-            <div key={i}>
-              <b><h1>HOTEL</h1></b>
-              i: {i}
-              Name: {ele.name}
-              # of pubs: {ele.breweryListLength}
-              Address: {ele.address['streetAddress']}
-              City: {ele.address['locality']}
-              Postal Code: {ele.address['postCode']}
-              State: {ele.address['region']}
-              Latitude: {ele.coordinate['lat']}
-              Longitude: {ele.coordinate['lon']}
-
-              Rating: {ele.guestReviews['rating']}
-              Unformatted Rating: {ele.guestReviews['unformattedRating']}
-              Total: {ele.guestReviews['total']}
-              Scale: {ele.guestReviews['scale']}
-              Badge: {ele.guestReviews['badge']}
-              Scarcity: {ele.messaging['scarcity']}
-              Price: {ele.ratePlan['price']['current']}
+            <div className='hotelWrapper'key={i}>
+              <div className='hotelGridContainer'>
+                <div className='hotel header'><h2>{ele.name}</h2></div>
+                <div className='hotel content'>Nearby Breweries:</div>
+                <div className='hotel content'>{ele.breweryListLength}</div>
+                <div className='hotel content'>Hotel Rating:</div>
+                <div className='hotel content'>{ele.starRating}/5</div>
+                <div className='hotel content'>Address: </div>
+                {ele.address.streetAddress ? (<div className='hotel content'>{ele.address.streetAddress}, {ele.address.locality}, {ele.address.region}, {ele.address.postalCode}</div>) : (<div className='hotel content'>No address provided</div>)}
+              </div>
+               
               <div>
                 <img src={ele.optimizedThumbUrls['srpDesktop']}></img>
               </div>
               <button onClick={(e) => hideHotel(i)}>Hide hotel</button>
               <button onClick={(e) => setBrewDone(true)}>Click me to see breweries</button>
-              <div>
-
+              <div className='allBreweriesWrapper'>
                 {ele.breweryList.map((brewery, j) => {
                   return (
                     <Brewery key={`Brewery ${j}`} brewery={brewery} />

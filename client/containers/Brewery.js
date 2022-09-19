@@ -5,20 +5,23 @@ const Brewery = ({ brewery }) => {
 
   return (
 
-    <div className='breweryContainer'>
-      <b><div>BREWERLY</div></b>
-      <div> <span>Brewery Type:{brewery.brewery_type} </span>  </div>
-      <div> <span>City:{brewery.city} </span>  </div>
-      <div> <span>County:{brewery.county} </span>  </div>
-      <div> <span>Latitude:{brewery.latitude} </span>  </div>
-      <div> <span>Longitude:{brewery.longitude} </span>  </div>
-      <div> <span>Name:{brewery.name} </span>  </div>
-      {/* <div> <span>Phone:{brewerly.phone} </span>  </div>
-      <div> <span>Postal Code:{brewerly.postal_code} </span>  </div>
-      <div> <span>State:{brewerly.state} </span>  </div>
-      <div> <span>Street:{brewerly.street} </span>  </div> */}
-      {brewery.website_url && (<div> <span><a href={brewery.website_url}>Website, click here!</a> </span>  </div>)}
-      <button onClick={(e) => { setShowSpecificBrewery(Object.assign(showSpecificBrewery, { show: false })) }}>Setting state test lmao</button>
+    // <div className='breweryContainer'>
+    //   <b><div>BREWERY</div></b>
+    //   <div> <span>Name:  {brewery.name} </span>  </div>
+    //   {brewery.phone && (<div> <span>Phone:  {brewery.phone} </span>  </div>)}
+    //   <div>Address:  {brewery.street}, {brewery.city}, {brewery.state}, {brewery.postal_code}</div>
+    //   {brewery.website_url && (<div> <span><a href={brewery.website_url}>Website, click here!</a> </span>  </div>)}
+    //   <button onClick={(e) => { setShowSpecificBrewery(Object.assign(showSpecificBrewery, { show: false })) }}>Setting state test lmao</button>
+    // </div>
+    <div className='breweryGridContainer'>
+      <div className='box header'><h3>{brewery.name}</h3></div>
+      <div className='box content'>Phone:</div>
+      {brewery.phone ? (<div className='box content'>{brewery.phone}</div>) : (<div className='box content'>No phone number provided</div>)}
+      <div className='box content'>Address:</div>
+      {brewery.street ? (<div className='box content'>{brewery.street}, {brewery.city}, {brewery.state} {brewery.postal_code}</div>) : (<div className='box content'>No address Provided</div>)}
+      <div className='box content'>Website:</div>
+      {brewery.website_url ? (<div className='box content'><a href={brewery.website_url}>{brewery.website_url}</a></div>) : (<div className='box content'>No website provided</div>)}
+      <div className='box footer'><button onClick={(e) => { setShowSpecificBrewery(Object.assign(showSpecificBrewery, { show: false })) }}>Setting state test lmao</button></div>
     </div>
 
   )
