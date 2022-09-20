@@ -14,6 +14,7 @@ const MainContainer = () => {
   const [hotelList, setHotelList] = useState([])
   const [hotelDone, setHotelDone] = useState(false)
   const [hotelCoordinate, setHotelCoordinate] = useState([])
+  const [initialCoordinate, setInitialCoordinate] = useState({})
   const [brewDone, setBrewDone] = useState({
     0: false,
     1: false,
@@ -78,6 +79,7 @@ const MainContainer = () => {
         return propertiesResult
       })
       .then((apiHotelList) => {
+        setInitialCoordinate({ lat: apiHotelList[0].coordinate.lat, lng: apiHotelList[0].coordinate.lon })
         console.log(hotelCoordinate, 'hotelCoordinate')
         let finalHotelData = []
         for (let i = 0; i < apiHotelList.length; i++) {
@@ -162,7 +164,7 @@ const MainContainer = () => {
         </div >
       </section>
       <section className='child'>
-        <WorldMap hotelCoordinate={hotelCoordinate} isLoading={isLoading} />
+        <WorldMap initialCoordinate={initialCoordinate} hotelCoordinate={hotelCoordinate} isLoading={isLoading} />
       </section>
     </container>
   );
