@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
-const WorldMap = ({ hotelCoordinate, isLoading, initialCoordinate }) => {
+const WorldMap = ({ hotelCoordinate, isLoading, initialCoordinate, coordinateBrewery }) => {
     const [coordinate, setCoordinate] = useState({ lat: 40.724852, lng: -74.035839 })
     return (
         <div className='map'>
@@ -17,14 +17,25 @@ const WorldMap = ({ hotelCoordinate, isLoading, initialCoordinate }) => {
                 // }
                 initialCenter={coordinate}
             >
+
                 {isLoading && hotelCoordinate.map((ele, i) => {
-                    console.log(hotelCoordinate)
+                    // console.log(hotelCoordinate)
                     return (
                         <Marker
+                            icon='https://www.pradipdebnath.com/wp-content/uploads/2019/12/map-marker-icon.png'
                             position={ele}
                         />
                     )
                 })}
+                {isLoading && coordinateBrewery.map((ele, i) => {
+                    return (
+                        <Marker
+                            icon='https://www.pradipdebnath.com/wp-content/uploads/2019/12/restaurant.png'
+                            position={ele}
+                        />
+                    )
+                })}
+
             </Map>
         </div >
     )

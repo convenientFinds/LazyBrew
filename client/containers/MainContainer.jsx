@@ -28,18 +28,16 @@ const MainContainer = () => {
     9: false,
   })
   const [isLoading, setIsLoading] = useState(true)
-
   const [checkInDate, setCheckInDate] = useState('')
   const [checkOutDate, setCheckOutDate] = useState('')
   const [selectedCity, setCity] = useState('')
-
+  const [coordinateBrewery, setCoordianteBrewery] = useState([])
   const [hotelResultNumber, setHotelResultNumber] = useState(5)
 
   //fetch request for hotels with check in/check out dates pertaining to city selected
   const getHotelData = () => {
     let checkIn = checkInDate.split("/").reverse().join("-")
     let checkOut = checkOutDate.split("/").reverse().join("-")
-
     const optionsProperties = {
       method: 'GET',
       url: 'https://hotels4.p.rapidapi.com/properties/list',
@@ -80,7 +78,6 @@ const MainContainer = () => {
       })
       .then((apiHotelList) => {
         setInitialCoordinate({ lat: apiHotelList[0].coordinate.lat, lng: apiHotelList[0].coordinate.lon })
-        console.log(hotelCoordinate, 'hotelCoordinate')
         let finalHotelData = []
         for (let i = 0; i < apiHotelList.length; i++) {
           const optionsBreweries = {
@@ -97,8 +94,12 @@ const MainContainer = () => {
                 if (distanceFromHotel > 2) {
                   break
                 }
-                // beerResponse.data['showHotel'] = true
-                breweryArray.push(beerResponse.data[j])
+                // beerResponse.data['showHotel'] = true beerResponse.data[j].latitude, beerResponse.data[j].longitude
+                // console.log(beerResponse.data[j], 'beerResponse.data[j]')
+                setCoordianteBrewery(breweryCurrent => [...breweryCurrent, { lat: beerResponse.data[j].latitude, lng: beerResponse.data[j].longitude }])
+                // setCoordianteBrewery([...coordinateBrewery, breweryCoordinate])
+                console.log('ok!')
+                console.log(coordinateBrewery, 'coordinateBrewery')
                 // console.log(beerResponse, 'beerResponse')
               }
               oneProperty.breweryList = breweryArray
@@ -164,7 +165,7 @@ const MainContainer = () => {
         </div >
       </section>
       <section className='child'>
-        <WorldMap initialCoordinate={initialCoordinate} hotelCoordinate={hotelCoordinate} isLoading={isLoading} />
+        <WorldMap coordinateBrewery={coordinateBrewery} initialCoordinate={initialCoordinate} hotelCoordinate={hotelCoordinate} isLoading={isLoading} />
       </section>
     </container>
   );
