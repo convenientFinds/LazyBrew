@@ -94,13 +94,7 @@ const MainContainer = () => {
                 if (distanceFromHotel > 2) {
                   break
                 }
-                // beerResponse.data['showHotel'] = true beerResponse.data[j].latitude, beerResponse.data[j].longitude
-                // console.log(beerResponse.data[j], 'beerResponse.data[j]')
                 setCoordianteBrewery(breweryCurrent => [...breweryCurrent, { lat: beerResponse.data[j].latitude, lng: beerResponse.data[j].longitude }])
-                // setCoordianteBrewery([...coordinateBrewery, breweryCoordinate])
-                console.log('ok!')
-                console.log(coordinateBrewery, 'coordinateBrewery')
-                // console.log(beerResponse, 'beerResponse')
               }
               oneProperty.breweryList = breweryArray
               //use the number of number of breweries to sort hotel order by most breweries in the vacinity
