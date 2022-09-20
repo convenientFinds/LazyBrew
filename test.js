@@ -25,3 +25,6 @@ arr.forEach((ele, i) => {
 })
 
 console.log(arr)
+
+
+

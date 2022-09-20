@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button } from '@mui/material';
 import axios from 'axios'
 import Hotel from './Hotel';
-
+import WorldMap from './WorldMap'
 //library for calculating distance using longitude/latitude
 var geodist = require('geodist')
 
@@ -13,6 +13,7 @@ const MainContainer = () => {
 
   const [hotelList, setHotelList] = useState([])
   const [hotelDone, setHotelDone] = useState(false)
+  const [hotelCoordinate, setHotelCoordinate] = useState([])
   const [brewDone, setBrewDone] = useState({
     0: false,
     1: false,
@@ -65,10 +66,19 @@ const MainContainer = () => {
     axios.request(optionsProperties)
       .then((response) => {
         let propertiesResult = response.data.data.body.searchResults.results
+        let coordinateForHotels = []
+        for (let i = 0; i < propertiesResult.length; i++) {
+          let coordinateObj = {
+            lat: propertiesResult[i].coordinate.lat,
+            lng: propertiesResult[i].coordinate.lon
+          }
+          coordinateForHotels.push(coordinateObj)
+        }
+        setHotelCoordinate(coordinateForHotels)
         return propertiesResult
       })
       .then((apiHotelList) => {
-        console.log(apiHotelList, 'apiHotelList')
+        console.log(hotelCoordinate, 'hotelCoordinate')
         let finalHotelData = []
         for (let i = 0; i < apiHotelList.length; i++) {
           const optionsBreweries = {
@@ -108,45 +118,53 @@ const MainContainer = () => {
   }
 
   return (
-    <div id="main_wrapper">
-      <div><h1 id='lazyBrew-header'>Lazy Brew </h1><span id="convenientFont"><b>by ConvenientFinds</b></span></div>
-      <br />
-      <label>Select Destination</label>/
-      <select onChange={(e) => setCity(e.target.value)}>
-        <option value="" disabled selected>Select Your City</option>
-        <option value={'1506246'}>New York</option>
-        <option value={'1439028'}>Los Angeles</option>
-        <option value={'1493604'}>San Francisco</option>
-        <option value={'1633050'}>Hawaii</option>
-        <option value={'780'}>Colorado</option>
+    <container className='holdingEverything'>
+      <section className='child'>
+        <div id="main_wrapper">
+          <div><h1 id='lazyBrew-header'>Lazy Brew </h1><span id="convenientFont"><b>by ConvenientFinds</b></span></div>
+          <br />
+          <label>Select Destination</label>/
+          <select onChange={(e) => setCity(e.target.value)}>
+            <option value="" disabled selected>Select Your City</option>
+            <option value={'1506246'}>New York</option>
+            <option value={'1439028'}>Los Angeles</option>
+            <option value={'1493604'}>San Francisco</option>
+            <option value={'1633050'}>Hawaii</option>
+            <option value={'780'}>Colorado</option>
 
 
-      </select>
+          </select>
 
-      <label>Check-in Date</label>
-      <input type="date" onChange={(e) => setCheckInDate(e.target.value)}></input>
-      <label>Check-in Date</label>
-      <input type="date" onChange={(e) => setCheckOutDate(e.target.value)}></input>
+          <label>Check-in Date</label>
+          <input type="date" onChange={(e) => setCheckInDate(e.target.value)}></input>
+          <label>Check-in Date</label>
+          <input type="date" onChange={(e) => setCheckOutDate(e.target.value)}></input>
 
-      <Button onClick={(e) => {
-        getHotelData();
-        setHotelDone(true)
-      }}>See Hotels</Button>
+          <Button onClick={(e) => {
+            getHotelData();
+            setHotelDone(true)
+          }}>See Hotels</Button>
 
-      <div id="allHotelsWrapper">
-        {isLoading || <div>Loading...</div>}
+          <div id="allHotelsWrapper">
+            {isLoading || <div>Loading...</div>}
 
-        {hotelDone && <Hotel
-          setHotelList={setHotelList}
-          hotelList={hotelList}
-          hotelDone={hotelDone}
-          brewDone={brewDone}
-          setBrewDone={setBrewDone}
-          setHotelDone={setHotelDone}
-          isLoading={isLoading}
-        />}
-      </div>
-    </div >
+            {hotelDone && <Hotel
+              setHotelList={setHotelList}
+              hotelList={hotelList}
+              hotelDone={hotelDone}
+              brewDone={brewDone}
+              setBrewDone={setBrewDone}
+              setHotelDone={setHotelDone}
+              isLoading={isLoading}
+            />}
+          </div>
+
+        </div >
+      </section>
+      <section className='child'>
+        <WorldMap hotelCoordinate={hotelCoordinate} isLoading={isLoading} />
+      </section>
+    </container>
   );
 
 }
